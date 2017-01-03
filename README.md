@@ -1,2 +1,2 @@
 # docker-golang
-Docker image for golang + manul
+Docker image for golang + manul and godep
