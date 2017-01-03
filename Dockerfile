@@ -6,5 +6,7 @@ RUN apt-get -q -y remove unzip
 RUN apt-get clean
 RUN go get github.com/golang/protobuf/protoc-gen-go
 
+RUN go get github.com/tools/godep
+
 RUN git clone --branch pkg-debian git://github.com/kovetskiy/manul /tmp/manul && cd /tmp/manul && ./build.sh && dpkg -i *.deb && rm -rf /tmp/manul
 
