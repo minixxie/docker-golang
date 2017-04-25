@@ -1,8 +1,9 @@
-FROM golang:1.7
+FROM golang:1.8-alpine
 
-RUN apt-get update && apt-get install -q -y unzip
-RUN cd /tmp/ && wget https://github.com/google/protobuf/releases/download/v3.1.0/protoc-3.1.0-linux-x86_64.zip && cd /usr && unzip -o /tmp/protoc-3.1.0-linux-x86_64.zip
-RUN apt-get -q -y remove unzip && apt-get clean
+RUN apk update && apk add --no-cache git
+RUN apk --update add --virtual build-dependencies unzip openssl
+RUN cd /tmp/ && wget https://github.com/google/protobuf/releases/download/v3.2.0/protoc-3.2.0-linux-x86_64.zip && cd /usr && unzip -o /tmp/protoc-3.2.0-linux-x86_64.zip && rm -f /tmp/protoc-3.2.0-linux-x86_64.zip
+RUN apk del build-dependencies
 
 RUN go get github.com/golang/protobuf/protoc-gen-go
-RUN go get -u github.com/kardianos/govendor && go get github.com/tools/godep && go get github.com/kovetskiy/manul
+RUN go get -u github.com/kardianos/govendor
