@@ -1,2 +1,2 @@
 # docker-golang
-Docker image for golang + dep + protoc-gen-go
+Docker image for golang + dep + protoc-gen-go + hey

@@ -14,3 +14,4 @@ RUN cd /usr && tar xzf /tmp/protoc-${PROTOC_VER}-linux-x86_64.tar.gz
 
 RUN go get github.com/golang/protobuf/protoc-gen-go
 RUN go get -u github.com/golang/dep/cmd/dep
+RUN go get -u github.com/rakyll/hey
