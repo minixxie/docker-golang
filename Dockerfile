@@ -14,6 +14,8 @@ RUN cd /usr && tar xzf /tmp/protoc-${PROTOC_VER}-linux-x86_64.tar.gz
 
 RUN go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
 RUN go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
-RUN go get -u github.com/golang/protobuf/protoc-gen-go
+RUN go get -u github.com/micro/protobuf/proto
+RUN go get -u github.com/micro/protobuf/protoc-gen-go
+#RUN go get -u github.com/golang/protobuf/protoc-gen-go
 RUN go get -u github.com/golang/dep/cmd/dep
 RUN go get -u github.com/rakyll/hey
