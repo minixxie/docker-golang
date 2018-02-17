@@ -19,3 +19,4 @@ RUN go get -u github.com/micro/protobuf/protoc-gen-go
 #RUN go get -u github.com/golang/protobuf/protoc-gen-go
 RUN go get -u github.com/golang/dep/cmd/dep
 RUN go get -u github.com/rakyll/hey
+RUN go get -u github.com/go-swagger/go-swagger/cmd/swagger
