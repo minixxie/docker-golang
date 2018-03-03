@@ -35,14 +35,18 @@ trap cleanup EXIT
 tail -n +$(expr $emptyLineNum + 1) "$bodyJson" > "$tmpfile"
 
 if [ "$LOAD_TEST" == 1 ]; then
+    if [ "$TOTAL_REQS" == "" ]; then
+        TOTAL_REQS=1000
+    fi
+    if [ "$CONCURRENCY" == "" ]; then
+        CONCURRENCY=10
+    fi
     echo "$headers" | xargs hey -n "$TOTAL_REQS" -c "$CONCURRENCY" -m $verb -D "$tmpfile" "$url" 
 else
-    echo curl -v -w "\nHTTP %{http_code} time:%{time_total}s\n" -X $verb "$url" -d @"$tmpfile" $headers
-    echo "$headers" | xargs curl -v -w "\nHTTP %{http_code} time:%{time_total}s\n" -X $verb "$url" -d @"$tmpfile"
-    exit 0
-    stdout=$(curl -v -w "\nHTTP %{http_code} time:%{time_total}s\n" -X $verb $headers "$url" -d @"$tmpfile")
+    stdout=$(echo "$headers" | xargs curl -v -w "\nHTTP %{http_code} time:%{time_total}s\n" -X $verb "$url" -d @"$tmpfile")
     j=$(echo "$stdout"|tail -n2|head -n1)
     s=$(echo "$stdout"|tail -n1);
-    o=$(echo "$stdout"|head -n -2);
-    echo "$o"; echo "$j"|python -m json.tool 2>/dev/null; echo "$s" 
+    #o=$(echo "$stdout"|head -n +2);
+    echo "$j"|python -m json.tool 2>/dev/null;
+    echo "$s"
 fi
