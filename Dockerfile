@@ -21,5 +21,6 @@ RUN go get -u github.com/golang/dep/cmd/dep
 RUN go get -u github.com/rakyll/hey
 RUN go get -u github.com/go-swagger/go-swagger/cmd/swagger
 RUN go get github.com/mwitkow/go-proto-validators/protoc-gen-govalidators
+RUN go get github.com/gogo/protobuf/protoc-gen-gofast
 
 ADD ./call-api.sh /usr/bin/call-api.sh
