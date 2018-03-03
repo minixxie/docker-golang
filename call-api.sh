@@ -20,7 +20,7 @@ url=$(echo -n "$firstLine" | cut -f 2 -d ' ')
 #echo "url=$url"
 
 headers=""
-if [ "$emptyLineNum" -gt 2 ]; then
+if [ "$emptyLineNum" != "" -a "$emptyLineNum" -gt 2 ]; then
     headerLines=$(head -n $(expr $emptyLineNum - 1) "$bodyJson" | tail -n +2)
     headers=$(echo -n "$headerLines" | sed "s/^/-H '/" | sed "s/\$/'/" | tr '\012' ' ')
     #echo "headers: $headers"
