@@ -62,9 +62,9 @@ else
     #o=$(echo "$stdout"|head -n +2);
     json=$(echo "$j"|python -m json.tool 2>/dev/null)
     if [ $? -ne 0 ]; then
-        echo "$j"
+        echo "$stdout"
     else
         echo "$json"
+        echo "$s"
     fi
-    echo "$s"
 fi
