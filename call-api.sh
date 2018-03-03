@@ -60,6 +60,11 @@ else
     j=$(echo "$stdout"|tail -n2|head -n1)
     s=$(echo "$stdout"|tail -n1);
     #o=$(echo "$stdout"|head -n +2);
-    echo "$j"|python -m json.tool 2>/dev/null;
+    json=$(echo "$j"|python -m json.tool 2>/dev/null)
+    if [ $? -ne 0 ]; then
+        echo "$j"
+    else
+        echo "$json"
+    fi
     echo "$s"
 fi
