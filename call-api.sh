@@ -11,6 +11,7 @@ fi
 bodyJson="$1"
 
 emptyLineNum=$(grep -E --line-number '^$' "$bodyJson" | head -n 1 | cut -f 1 -d ':')
+#echo "emptyLineNum: $emptyLineNum ==="
 
 firstLine=$(head -n 1 "$bodyJson")
 verb=$(echo -n "$firstLine" | cut -f 1 -d ' ')
@@ -19,20 +20,32 @@ url=$(echo -n "$firstLine" | cut -f 2 -d ' ')
 #echo "verb=$verb"
 #echo "url=$url"
 
-headers=""
-if [ "$emptyLineNum" != "" -a "$emptyLineNum" -gt 2 ]; then
-    headerLines=$(head -n $(expr $emptyLineNum - 1) "$bodyJson" | tail -n +2)
-    headers=$(echo -n "$headerLines" | sed "s/^/-H '/" | sed "s/\$/'/" | tr '\012' ' ')
-    #echo "headers: $headers"
-fi
-
 tmpfile=$(mktemp /tmp/XXXXXX)
 function cleanup {
    rm -f "$tmpfile"
 }
 trap cleanup EXIT
 
-tail -n +$(expr $emptyLineNum + 1) "$bodyJson" > "$tmpfile"
+headers=""
+contentRemoveFirstLine=$(tail -n +2 "$bodyJson")
+if [ "$emptyLineNum" != "" ]; then
+    # has empty line
+    headerLines=$(head -n $(expr $emptyLineNum - 1) "$bodyJson" | tail -n +2 | sed '/^\s*$/d')
+    headers=$(echo -n "$headerLines" | sed "s/^/-H '/" | sed "s/\$/'/" | tr '\012' ' ')
+    tail -n +$(expr $emptyLineNum + 1) "$bodyJson" > "$tmpfile"
+else
+    # has NO empty line
+    headerLines=$(echo -n "$contentRemoveFirstLine" | sed '/^\s*$/d')
+    headers=$(echo -n "$headerLines" | sed "s/^/-H '/" | sed "s/\$/'/" | tr '\012' ' ')
+    echo -n "" > "$tmpfile" # empty body
+fi
+
+#echo "headerLines:==="
+#echo "$headerLines"
+#echo "headers: $headers"
+#echo "body:==="
+#cat "$tmpfile"
+
 
 if [ "$LOAD_TEST" == 1 ]; then
     if [ "$TOTAL_REQS" == "" ]; then
