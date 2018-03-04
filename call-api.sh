@@ -54,7 +54,12 @@ if [ "$LOAD_TEST" == 1 ]; then
     if [ "$CONCURRENCY" == "" ]; then
         CONCURRENCY=10
     fi
-    echo "$headers" | xargs hey -n "$TOTAL_REQS" -c "$CONCURRENCY" -m $verb -D "$tmpfile" "$url" 
+    #echo "$headers" | xargs hey -n "$TOTAL_REQS" -c "$CONCURRENCY" -m $verb -D "$tmpfile" "$url"
+    if [ "$verb" == "GET" ]; then
+        echo "$headers $url" | xargs ab -n "$TOTAL_REQS" -c "$CONCURRENCY" -m "$verb"
+    else
+        echo "$headers $url" | xargs ab -n "$TOTAL_REQS" -c "$CONCURRENCY" -p "$tmpfile"
+    fi
 else
     stdout=$(echo "$headers" | xargs curl -v -w "\nHTTP %{http_code} time:%{time_total}s\n" -X $verb "$url" -d @"$tmpfile")
     j=$(echo "$stdout"|tail -n2|head -n1)
