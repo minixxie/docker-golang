@@ -25,7 +25,7 @@ RUN go get -u github.com/rakyll/hey
 RUN go get -u github.com/go-swagger/go-swagger/cmd/swagger
 RUN go get github.com/mwitkow/go-proto-validators/protoc-gen-govalidators
 RUN go get github.com/gogo/protobuf/protoc-gen-gofast
-RUN go get github.com/gogo/protobuf/protoc-gen-gogofast && cd /go/src/github.com/gogo/protobuf/protobuf/ && make && cp ../types/*.go ./google/protobuf/
+RUN go get github.com/gogo/protobuf/protoc-gen-gogofast
 
 
 ADD ./call-api.sh /usr/bin/call-api.sh
