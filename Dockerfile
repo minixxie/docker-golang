@@ -24,6 +24,7 @@ RUN go get -u -v github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway 
  github.com/go-swagger/go-swagger/cmd/swagger \
  github.com/mwitkow/go-proto-validators/protoc-gen-govalidators \
  github.com/gogo/protobuf/protoc-gen-gofast \
- github.com/gogo/protobuf/protoc-gen-gogofast
+ github.com/gogo/protobuf/protoc-gen-gogofast \
+ github.com/oxequa/realize
  
 ADD ./call-api.sh /usr/bin/call-api.sh
