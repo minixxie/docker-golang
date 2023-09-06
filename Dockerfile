@@ -26,4 +26,6 @@ RUN cd /usr && tar xzf /tmp/protoc-${PROTOC_VER}-linux-x86_64.tar.gz
 # github.com/gogo/protobuf/protoc-gen-gofast \
 # github.com/gogo/protobuf/protoc-gen-gogofast
 # 
-#ADD ./call-api.sh /usr/bin/call-api.sh
+ADD ./call-api.sh /usr/bin/call-api.sh
+ADD ./get-request.http /get-request.http
+ADD ./post-request.http /post-request.http

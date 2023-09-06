@@ -2,18 +2,12 @@
 
 scriptPath=$(cd $(dirname "$0") && pwd)
 
-if [ "$1" == "" ]
-then
-    echo >&2 "usage: $0 body.json"
-    exit 1
-fi
+bodyJson=`cat`  # from stdin
 
-bodyJson="$1"
-
-emptyLineNum=$(grep -E --line-number '^$' "$bodyJson" | head -n 1 | cut -f 1 -d ':')
+emptyLineNum=$(echo -n "$bodyJson" | grep -E --line-number '^$' | head -n 1 | cut -f 1 -d ':')
 #echo "emptyLineNum: $emptyLineNum ==="
 
-firstLine=$(head -n 1 "$bodyJson")
+firstLine=$(echo -n "$bodyJson" | head -n 1)
 verb=$(echo -n "$firstLine" | cut -f 1 -d ' ')
 url=$(echo -n "$firstLine" | cut -f 2 -d ' ')
 
@@ -27,12 +21,12 @@ function cleanup {
 trap cleanup EXIT
 
 headers=""
-contentRemoveFirstLine=$(tail -n +2 "$bodyJson")
+contentRemoveFirstLine=$(echo -n "$bodyJson" | tail -n +2)
 if [ "$emptyLineNum" != "" ]; then
     # has empty line
-    headerLines=$(head -n $(expr $emptyLineNum - 1) "$bodyJson" | tail -n +2 | sed '/^\s*$/d')
+    headerLines=$(echo -n "$bodyJson" | head -n $(expr $emptyLineNum - 1) | tail -n +2 | sed '/^\s*$/d')
     headers=$(echo -n "$headerLines" | sed "s/^/-H '/" | sed "s/\$/'/" | tr '\012' ' ')
-    tail -n +$(expr $emptyLineNum + 1) "$bodyJson" > "$tmpfile"
+    echo -n "$bodyJson" | tail -n +$(expr $emptyLineNum + 1) > "$tmpfile"
 else
     # has NO empty line
     headerLines=$(echo -n "$contentRemoveFirstLine" | sed '/^\s*$/d')

@@ -1,0 +1,7 @@
+POST http://www.google.com
+Content-Type: application/json; charset=utf-8
+Authorization: hmac aaa:bbb:ccc
+
+{
+	"id": 1234
+}
