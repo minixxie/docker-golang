@@ -15,17 +15,8 @@ ENV PROTOC_VER 24.1
 COPY --from=protoc /tmp/protoc-${PROTOC_VER}-linux-x86_64.tar.gz /tmp/
 RUN cd /usr && tar xzf /tmp/protoc-${PROTOC_VER}-linux-x86_64.tar.gz
 
-#RUN go get -u -v github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway \
-# github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger \
-# github.com/micro/protobuf/proto \
-# github.com/micro/protobuf/protoc-gen-go \
-# github.com/golang/dep/cmd/dep \
-# github.com/rakyll/hey \
-# github.com/go-swagger/go-swagger/cmd/swagger \
-# github.com/mwitkow/go-proto-validators/protoc-gen-govalidators \
-# github.com/gogo/protobuf/protoc-gen-gofast \
-# github.com/gogo/protobuf/protoc-gen-gogofast
-# 
 ADD ./call-api.sh /usr/bin/call-api.sh
 ADD ./get-request.http /get-request.http
 ADD ./post-request.http /post-request.http
+
+COPY --from=bufbuild/buf:1.26.1 /usr/local/bin/buf /usr/bin/buf
