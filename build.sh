@@ -1,15 +1,16 @@
 #!/bin/bash
 
-### https://docs.docker.com/build/building/multi-platform/
-# Pre-requisite:
-# brew install colima
-# colima start \
-#        --arch aarch64 \
-#        --runtime docker \
-#        --cpu 4 \
-#        --memory 8
-# colima ssh
-# docker buildx ls
-# docker buildx create --name mybuilder --driver-opt 'image=moby/buildkit:v0.12.1-rootless' --bootstrap --use
+set -e
 
-docker buildx build --push --platform linux/amd64,linux/arm64/v8 --tag minixxie/golang:1.21.0 .
+scriptPath=$(cd $(dirname "$0") && pwd)
+
+image=minixxie/golang
+tag=1.21.0
+platforms=linux/amd64,linux/arm64/v8
+
+nerdctl build . \
+	-f Dockerfile --platform $platforms \
+	--tag minixxie/golang:$tag \
+	--namespace=k8s.io
+nerdctl login
+nerdctl push --platform $platforms minixxie/golang:$tag --namespace=k8s.io
